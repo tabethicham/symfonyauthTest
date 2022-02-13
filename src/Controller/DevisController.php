@@ -32,6 +32,7 @@ class DevisController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $devi = new Devis();
+        $devi->setDateDevis(new \DateTime('now'));
         $form = $this->createForm(DevisType::class, $devi);
         $form->handleRequest($request);
 

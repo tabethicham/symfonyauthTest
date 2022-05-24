@@ -1,4 +1,21 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% form_theme formClient 'bootstrap_4_layout.html.twig' %}
+{{ form_start(formClient) }}
+   {# {{ form_widget(formClient) }}#}
+    <div id="clientt_refClient" class="row  rounded-circle">
+        <div class="col-12 ">
+           {{ form_row(formClient.refClient) }} {#'attr': {'disabled':""}#}
+        </div>
+    </div>
+    <div id="clientt_emailClient" class="row  rounded-circle">
+        <div class="col-12 ">
+           {{ form_row(formClient.emailClient) }} {#'attr': {'disabled':""}#}
+        </div>
+    </div>
+    <div id="clientt_telClient" class="row  rounded-circle">
+        <div class="col-12 ">
+           {{ form_row(formClient.telClient) }} {#'attr': {'disabled':""}#}
+        </div>
+    </div>
+
+    <button class="btn btn-primary col-2 offset-10">{{ button_label|default('Ajouter') }}</button>
+{{ form_end(formClient) }}

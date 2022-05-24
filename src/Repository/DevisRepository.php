@@ -18,11 +18,53 @@ class DevisRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Devis::class);
     }
+    
+    public function getLastId()
+{
+    $conn = $this->getEntityManager()->getConnection();
 
+    $sql = 'SELECT Max(id) as max FROM devis';
+    $stmt = $conn->prepare($sql);
+    $resultSet = $stmt->executeQuery();
+    //echo $resultSet;
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->fetchAllAssociative()[0]['max'];
+
+
+}
+public function getLastIdByLastYear()
+{
+    $conn = $this->getEntityManager()->getConnection();
+
+    $sql = "SELECT Max(id) as max FROM devis where devis.ref_devis like '2021%'";
+    $stmt = $conn->prepare($sql);
+    $resultSet = $stmt->executeQuery();
+    //echo $resultSet;
+    // returns an array of arrays (i.e. a raw data set)
+    return $resultSet->fetchAllAssociative()[0]['max'];
+
+
+}
+
+/*
+    public function getLastId()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT Max(id) FROM devis';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }*/
     // /**
     //  * @return Devis[] Returns an array of Devis objects
     //  */
     /*
+
+     
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('d')

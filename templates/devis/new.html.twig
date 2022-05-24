@@ -3,9 +3,72 @@
 {% block title %}New Devis{% endblock %}
 
 {% block body %}
-    <h1>Create new Devis</h1>
 
-    {{ include('devis/_form.html.twig') }}
+<script>/** autocomplete **/
 
-    <a href="{{ path('devis_index') }}">back to list</a>
+/* initialisation paramètres globaux : */
+var cache = {}; /* tableau cache de tous les termes */
+var term = null; /* terme renseigné dans le champ input */
+var baseUrl = 'localhost:8000/'; /* url du site */
+baseUrl = '';
+
+$(document).ready(function() {
+    /* city autocomplete */
+    $('#devis_clientt').autocomplete({
+      //  minLength:2, /* nombre de caractères minimaux pour lancer une recherche */
+        delay:200, /* delais après la dernière touche appuyée avant de lancer une recherche */
+      //  scrollHeight:320,
+       appendTo:'',//'#devis_test', /* div ou afficher la liste des résultats, si null, ce sera une div en position fixe avant la fin de </body> */
+       
+        /* dès qu'une recherche se lance, source est executé, il peut contenir soit un tableau JSON de termes, soit une fonctions qui retournera un résultat */
+        source:function(request,response){
+         
+                $.ajax({
+                    type:'GET',
+                    url:'/client/jsoon/em/'+request.term,
+                    data:{q:request.term},//e.term,
+                    dataType:"json",
+                    async:true,
+                   // cache:true,
+                    success:function(data){
+                        if(data.length>0){
+                        response(data);
+                        }
+                        else{
+                            data=['aucun résultat trouvé ...']
+                            response(data);
+
+                        }
+                    }
+                });
+            },
+        minLength:2,
+
+                       
+        });
+});
+/****************************/
+</script>
+<span id="loading" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <h1>Create new Devis</h1>
+
+                 {{ include('devis/_form.html.twig') }}
+                 <div class="row">
+                     {#<div id="devis_test" class="col-6">
+
+                     </div>#}
+                     <div class="col-6">
+                         <button>ajouter</button>
+                     </div>
+                 </div>
+                 
+                 <a class=" offset-10" href="{{ path('devis_index') }}">back to list</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

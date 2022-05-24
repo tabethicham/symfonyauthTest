@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New LignesDevis{% endblock %}
+
+{% block body %}
+    <div class="container"> 
+        <h1 class="col-6 offset-3">Create new LignesDevis</h1>
+        {{ include('lignes_devis/_form.html.twig') }}
+        <a href="{{ path('lignes_devis_index') }}">back to list</a>
+    </div>
+
+
+    <h1>le lignes devis deja existantes </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Designation</th>
+                <th>Quantite</th>
+                <th>PrixUnitHT</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lignes_devi in lignesDevis %}
+            <tr>
+                <td>{{ lignes_devi.id }}</td>
+                <td>{{ lignes_devi.designation }}</td>
+                <td>{{ lignes_devi.quantite }}</td>
+                <td>{{ lignes_devi.prixUnitHT }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
+
+{#
+    
+    {% form_theme ajoutLangue 'bootstrap_4_layout.html.twig'  %}
+    <div id="langues" class="container" style="margin-top: 4rem;min-height:100vh" >
+            <h1 class="h3 mb-3 font-weight-normal text-center">Ajouter une langue</h1> 
+            {{ form_start(ajoutLangue) }}
+            {{ form_row(ajoutLangue.langue, {label: 'Langue'}) }}
+            {{ form_row(ajoutLangue.niveau, {label: 'Niveau'}) }}
+    
+            <input id="submitLangue" type="submit" class="btn btn-primary" name="Sauvegarder">
+        {{ form_end(ajoutLangue) }}
+    
+    </div>
+#}

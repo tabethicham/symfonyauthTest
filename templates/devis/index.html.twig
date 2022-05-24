@@ -1,43 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devis index{% endblock %}
+{% block title %}Listes des devis{% endblock %}
 
 {% block body %}
-    <h1>Devis index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>RefDevis</th>
-                <th>DateDevis</th>
-                <th>MessageDevis</th>
-                <th>ModalitesPaiementDevis</th>
-                <th>DelaiDevis</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for devi in devis %}
-            <tr>
-                <td>{{ devi.id }}</td>
-                <td>{{ devi.refDevis }}</td>
-                <td>{{ devi.dateDevis ? devi.dateDevis|date('Y-m-d') : '' }}</td>
-                <td>{{ devi.messageDevis }}</td>
-                <td>{{ devi.modalitesPaiementDevis }}</td>
-                <td>{{ devi.delaiDevis }}</td>
-                <td>
-                    <a href="{{ path('devis_show', {'id': devi.id}) }}">show</a>
-                    <a href="{{ path('devis_edit', {'id': devi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+   {#<div class="container bg-white mt-5">#}
+       <div class="row bg-white" >
+           <div class="col">
+            <h1>Listes des devis</h1>
+
+            <table id="dataTable" class="display">
+                <thead>
+                    <tr>
+                        
+                        <th>Référence Devis</th>
+                        <th>Date Devis</th>
+                        <th>Raison social</th>
+                        <th>Montant TTC</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for devi in devis %}
+                    {% set total=0 %}
+                    {% for ligne in devi.ligneDevis %}
+                        {% set total=ligne.quantite * ligne.prixUnitHT %}
+                    {% endfor %}
+                
+                {% set total=total*1.2 %}
+
+                    <tr>
+                       
+                        <td>{{ devi.refDevis }}</td>
+                        <td>{{ devi.dateDevis ? devi.dateDevis|date('Y-m-d') : '' }}</td>
+                        <td>{{ devi.client.refClient }}</td>
+                        
+                        <td> {{total}} Dhs</td>
+                        <td>
+                            <a href="{{ path('devis_show', {'id': devi.id}) }}">Détails</a>
+                            <a href="{{ path('agentC_devis_edit', {'id': devi.id}) }}">Modifier</a>
+                            <a href="{{ path('consulter_devis', {'id': devi.id}) }}">consulter </a>
+                            <a href="{{ path('pdf_devis', {'id': devi.id}) }}">Générer Pdf</a>{##}
+                            <a href="">Générer commande</a>{#{{ path('generer_commande', {'id': devi.id}) }}#}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+           </div>
+       </div>
+   {#</div>#}
+   
 
     <a href="{{ path('devis_new') }}">Create new</a>
+   {# {{ render(path('client_index')) }}#}
 {% endblock %}

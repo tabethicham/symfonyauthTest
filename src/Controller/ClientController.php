@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+
+
 
 /**
  * @Route("/client")
@@ -44,7 +48,7 @@ class ClientController extends AbstractController
 
         return $this->renderForm('client/new.html.twig', [
             'client' => $client,
-            'form' => $form,
+            'formClient' => $form,
         ]);
     }
 
@@ -74,7 +78,7 @@ class ClientController extends AbstractController
 
         return $this->renderForm('client/edit.html.twig', [
             'client' => $client,
-            'form' => $form,
+            'formClient' => $form,
         ]);
     }
 
@@ -90,4 +94,56 @@ class ClientController extends AbstractController
 
         return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/jsoon/{id}", name="client_show1", methods={"GET"})
+     */
+    public function show1(Client $client,SerializerInterface $serializer)
+    {  // dd(json_encode($client));
+      //  return new JsonResponse( json_decode( $client));
+     // $data = $serializer->serialize(array($client)[0], 'json');
+      // $this->get('serializer')->serialize($client, 'json');
+       // $data=array($client)[0];
+       // dd($data['id']);
+      $response = new JsonResponse((array)$client);
+      $response->headers->set('Content-Type', 'application/json');
+
+      return $response;
+    }
+
+    /**
+     * @Route("/jsoon/em/{email}", name="client_showemm", methods={"GET"})
+     */
+    public function showemail(string $email,ClientRepository $clientRepository,SerializerInterface $serializer)
+    {   
+        // dd(json_encode($client));
+        //  return new JsonResponse( json_decode( $client));
+        // $data = $serializer->serialize(array($client)[0], 'json');
+        // $this->get('serializer')->serialize($client, 'json');
+        // $data=array($client)[0];
+        // dd($data['id']);
+        // dd($clientRepository->findByEmail("az"));
+
+
+      //creation dune session pour ajouter l id et l email, refClient.... 
+      //$data=$clientRepository->findByEmail($email);
+      $data=$clientRepository->findByRefClient($email);
+        for($i=0;$i<count($data);++$i){
+            //$data[$i]=$data[$i]->getId().' '.$data[$i]->getEmailClient().' '.$data[$i]->getRefClient();
+            $data[$i]=$data[$i]->getRefClient();
+        }
+
+      
+      $response = new JsonResponse($data);
+       
+      $response->headers->set('Content-Type', 'application/json');
+
+      return $response;
+    }
+
+
+
+
+
+
 }

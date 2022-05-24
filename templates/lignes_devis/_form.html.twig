@@ -1,0 +1,23 @@
+{% form_theme formlignes 'bootstrap_4_layout.html.twig' %}
+ 
+    {{ form_start(formlignes) }}
+   
+        <div class="row">
+            <div class="col-5">
+                {{ form_row(formlignes.designation, {label: 'Désignation'}) }}
+            </div>
+            <div class="col-2">
+                {{ form_row(formlignes.quantite, {label: 'Quantité'}) }}
+            </div>
+            <div class="col-2">
+                {{ form_row(formlignes.prixUnitHT, {label: 'Prix Unit HT'}) }}
+            </div>
+            <div class="col-2" style="display: none;">
+                {{ form_row(formlignes.deviss, {label: 'Devis'}) }}
+            </div>
+            <div class="col-3">
+               
+                <button class=" form_control btn btn-primary" style="margin-top:25px;height:33px">{{ button_label|default('Ajouter') }}</button>
+            </div>
+        </div>
+   {{ form_end(formlignes) }}

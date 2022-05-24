@@ -19,6 +19,23 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+    
+    public function findByEmail($keyword){
+        $query = $this->createQueryBuilder('a')
+            ->where('a.emailClient LIKE :key')
+            ->setParameter('key' , '%'.$keyword.'%')->getQuery();
+ 
+        return $query->getResult();
+    }
+
+
+    public function findByRefClient($keyword){
+        $query = $this->createQueryBuilder('a')
+            ->where('a.refClient LIKE :key')
+            ->setParameter('key' , '%'.$keyword.'%')->getQuery();
+ 
+        return $query->getResult();
+    }
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */

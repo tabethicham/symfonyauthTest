@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\DevisRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=DevisRepository::class)
+ *@UniqueEntity("refDevis")
  */
 class Devis
 {
@@ -18,8 +22,11 @@ class Devis
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Length(max=15)
      */
+    
     private $refDevis;
 
     /**
@@ -29,24 +36,38 @@ class Devis
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=3 , max=255)
+     * @Assert\NotBlank
      */
     private $messageDevis;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
-    private $modalitesPaiementDevis;
+    private $modalitesPaiementDevis="null";
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
-    private $delaiDevis;
+    private $delaiDevis="null";
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="listesDevis")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LignesDevis::class, mappedBy="devis")
+     */
+    private $lignedevis;
+
+    public function __construct()
+    {
+        $this->lignedevis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +142,36 @@ class Devis
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LignesDevis[]
+     */
+    public function getLignedevis(): Collection
+    {
+        return $this->lignedevis;
+    }
+
+    public function addLignedevi(LignesDevis $lignedevi): self
+    {
+        if (!$this->lignedevis->contains($lignedevi)) {
+            $this->lignedevis[] = $lignedevi;
+            $lignedevi->setDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignedevi(LignesDevis $lignedevi): self
+    {
+        if ($this->lignedevis->removeElement($lignedevi)) {
+            // set the owning side to null (unless already changed)
+            if ($lignedevi->getDevis() === $this) {
+                $lignedevi->setDevis(null);
+            }
+        }
 
         return $this;
     }

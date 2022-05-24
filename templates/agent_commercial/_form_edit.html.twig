@@ -1,0 +1,47 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(form) }}
+        <div class="row  ">
+            <div id="devis_refDeviss" class="col-12 ">
+                {{ form_row(form.refDevis, {label: 'Référence devis'}) }} {#'attr': {'disabled':""}#}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 font-weight-bold">
+                {{ form_row(form.dateDevis, {label: 'Date de création devis'}) }}
+            </div>
+        </div>
+        <div class="row" >
+            <div id="devis_messageDeviss" class="col-12">
+               {# {{form_errors(form.messageDevis)}} #}
+                {{ form_row(form.messageDevis) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {{ form_row(form.clientt, {label: 'Raison social', value: devi.client.refClient }) }}
+            </div>
+        </div>
+        
+        <div id="clientDevis">
+            
+        </div>
+        <div  id="devis_modalitess" class="row">
+            <div class="col-12">
+                {{ form_row(form.modalitesPaiementDevis, {label: 'Modalités Paiement Devis '}) }}
+            </div>
+        </div>
+        <div id="devis_delaiss" class="row"> 
+            <div class="col-12">
+                {{ form_row(form.delaiDevis, {label: 'délai Devis '}) }}
+            </div>
+        </div>
+
+        
+       <button class="btn btn-primary offset-10 col-2" id="nextDevisUpdate">{{ button_label|default('Suivant') }}</button>
+        <button style="display:none" class="btn btn-primary offset-10 col-2" id="nextDevisFinUpdate">Modifier</button>
+        {##}
+        
+   {{ form_end(form) }}
+
+
+

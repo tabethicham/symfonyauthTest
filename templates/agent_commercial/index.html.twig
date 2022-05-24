@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter Devis{% endblock %}
+
+
+
+{% block body %}
+
+
+{#<span id="loading" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i></span>#}
+
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-6  offset-3">
+                <div class="progress bg-white border" style="height:40px">
+                    <div id="progressId" class="progress-bar progress-bar-striped bg-primary" style="width:33%">
+                    Etape 1/3
+                    </div>
+                    
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3 " id="devisajax">
+        <div class="row">
+            <div class=" bg-white col-6 offset-3">
+                <button class="col-12 mt-3 mb-3 rounded btn btn-primary">Création un nouveau Devis</button>
+                <div id="ajaxdevis"> {{ include('agent_commercial/_form.html.twig') }}</div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6 bg-White offset-3 ">
+                <button type="button" class="col-12 btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ajouter Client</button>
+            </div>
+        </div>
+
+    </div>
+
+<script>
+    function lignes_devis_next(){
+
+    }
+</script>
+<div class="container bg-white" id="devisajaxlignes">
+   {# <div  > #}
+        <h1 class="col-6 offset-3">Création une ligne Devis</h1>
+        {{ include('lignes_devis/_form.html.twig') }}
+        <div class="row">
+            <div class="col-5">
+                <button  id="lignes_devis_next" class="col-12 " >suivant</button>
+            </div>
+            <div class="col-5">
+                <button  id="lignes_devis_retour" class="col-12" >retour</button>
+            </div>
+        </div>
+        
+        
+    {#</div>#}
+
+    
+    
+        <div id="lignesdevis">
+
+        </div>
+   {#
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Désignation</th>
+                <th>Quantité</th>
+                <th>Prix Unit HT</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lignes_devi in lignesDevis %}
+            <tr>
+                <td>{{ lignes_devi.id }}</td>
+                <td>{{ lignes_devi.designation }}</td>
+                <td>{{ lignes_devi.quantite }}</td>
+                <td>{{ lignes_devi.prixUnitHT }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>#}
+
+
+</div>
+
+
+
+{#<script language = "javascript" 
+      src = "https://code.jquery.com/jquery-2.2.4.min.js"></script> #}
+
+
+
+{## lignes de devis##}
+
+
+
+<script language = "javascript">  
+    $(document).ready(function(){ 
+   $("li").on("click",function(){ console.log('bb');});
+    });
+
+    </script>
+
+
+<div class="container">
+    <!--<h2>Modal Example</h2>
+     Trigger the modal with a button -->
+    <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Ajouter Client</button>
+  -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title bg-primary">Ajouter Client</h4>
+            <button type="button" class="close bg-danger" data-dismiss="modal">&times;</button>
+            
+          </div>
+          <div class="modal-body" id="ajaxAddClient">
+              <div id="devisMessageSuccess" class=" text-center bg-success" ></div>
+            {{ include('client/_form.html.twig') }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consulter devis{% endblock %}
+
+
+
+{% block body %}
+{#<div class="container bg-white mt-5">#}
+    <div class="row mt-5">
+        <div class="col-2">
+            <img src="https://www.ljtmaroc.com/images/logo.png" alt="" style="height: 70px;">
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-3 offset-5 mt-4">
+            <span>OFFRE DE PRIX N° {{devis.refDevis}} </span>
+        </div>
+        <div class="col-2 offset-2 ">
+            <span>Date: {{devis.dateDevis? devis.dateDevis|date('d-m-y') : ''}}</span>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col">
+            <p>A l'attention de Monsieur le directeur</p>
+            <p>Société: {{devis.client.refClient}}</p>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <p >
+                Monsieur,<br>
+                <span class="ml-5">Ci-joint l'offre de prix relative à votre besoin communiqué aux services de LJT MAROC
+                </span>
+            </p>
+        </div>
+    </div>
+
+
+    <span class="font-weight-bold"> I-Borderaux des prix</span>
+    <div class="row mt-4">
+        <div class="col-12 mb-0">
+            <table class="table text-center border mb-0">
+                <thead class="">
+                    <tr>
+                        <th class="col-6 border text-center">Désignation</th>
+                        <th class=" border text-center">Quantité</th>
+                        <th class=" border text-center">Prix Unit HT</th>
+                        <th class=" border text-center">Prix Total HT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set montantTotal=0 %}
+                    {% for ligne in devis.ligneDevis%}
+                        <tr>
+                            <td class="col-6 text-left border">{{ligne.designation}}</td>
+                            <td class="col-2 border"> {{ligne.quantite}} </td>
+                            <td class="col-2 border"> {{ligne.prixUnitHT}} </td>
+                            <td class="col-2 border">{% set total=ligne.quantite * ligne.prixUnitHT %} {{total}}</td>
+                        </tr>
+                    {% set montantTotal=montantTotal+total %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6 offset-6  mt-0 pl-0">
+            <table class="table text-center border mt-0">
+                <tbody>
+                    <tr class="border">
+                        
+                        <td class="col-4   border">Montant total H.T</td>
+                        <td class="col-2  border">{{montantTotal}}</td>
+                        
+                    </tr>
+                    <tr class="border">
+                        
+                        <td class="col-4   border">Montant TVA (20%)</td>
+                        <td class="col-2  border">{%set tva=montantTotal* 0.2%} {{tva}}</td>
+                        
+                    </tr>
+                    <tr class="border">
+                        
+                        <td class="col-4   border">Montant total TTC</td>
+                        <td class="col-2  border">{%set ttc=montantTotal*1.2%} {{ttc}}</td>
+                        
+                    </tr>
+                    
+                   
+                   
+
+
+                    
+                </tbody>
+            </table>
+        </div>
+    </div> 
+    <div class="row mt-4">
+        <div class="col">
+            <p> 
+                Arrêté la présente estimation de l'offre à la somme de {{ttc}} Dhs   
+            </p>
+        </div>
+    </div>
+    <br>
+    <span class="font-weight-bold mt-4"> II-Modalités de Paiements:</span>
+    <div class="row mt-2">
+        <div class="col ml-5">
+            <span>- 60 jours à la réception de la facture.</span>
+        </div>
+    </div>
+    <br>
+    <span class="font-weight-bold mt-4"> III- Délai:</span>
+    <div class="row mt-2">
+        <div class="col ml-5">
+            <span>{{devis.delaiDevis}}</span>
+        </div>
+    </div>
+    <br>
+    <span class="font-weight-bold mt-4"> IV- Message:</span>
+    <div class="row mt-2 mb-5">
+        <div class="col ml-5">
+            <span>{{devis.messageDevis}}</span>
+        </div>
+    </div>
+    
+            
+                
+    
+
+
+
+{#</div>#}
+
+
+
+
+{% endblock%}

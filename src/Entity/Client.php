@@ -6,9 +6,12 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @UniqueEntity("refClient")
  */
 class Client
 {
@@ -20,17 +23,23 @@ class Client
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=15,unique=true)
+     * @Assert\Length(min=2,max=15)
+     * @Assert\NotBlank
      */
     private $refClient;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message = "Cet email '{{ value }}' n'est pas valide.")
+     * @Assert\NotBlank
      */
     private $emailClient;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Length(min=10, max=15)
+     * @Assert\NotBlank
      */
     private $telClient;
 
@@ -84,6 +93,13 @@ class Client
 
         return $this;
     }
+    /*public function __toString()
+    {
+        
+    
+
+        return "dee";
+    }*/
 
     /**
      * @return Collection|Devis[]
